@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Ajax and JSON</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<script src="js/xmltojson.js"></script>
+		<script>
+			
+			function getEmployee() {
+
+				let ajax = new XMLHttpRequest();
+
+				ajax.open('GET', 'http://localhost/requisicao_ajax_json_js/file.json');
+
+				ajax.send();
+
+				ajax.onreadystatechange = function() {
+								
+					if(ajax.readyState == 4 && ajax.status == 200) {
+									
+						let JSONEmployee = ajax.responseText;				
+						let objJsonEmployee = JSON.parse(JSONEmployee);
+						console.log(objJsonEmployee);
+						
+						/*
+						<section id="description">
+							<h3>Name: </h3>
+							<h4>Age: </h4>
+							<h4>Salary: </h4>
+							<h4>Office: </h4>
+						</section>
+						*/
+						
+						for(let i in objJsonEmployee.employee) {
+
+							let item = objJsonEmployee.employee[i];
+
+							//console.log(item);
+
+							// Create Elements
+							let sectionDescription = document.createElement('section');
+							sectionDescription.id = 'description';
+
+							let h3 = document.createElement('h3');
+							h3.innerHTML = "Employee:";
+							h3.style.padding = "20px";
+
+							let p1 = document.createElement('p');
+							p1.innerHTML = "<strong>Name: </strong>" + item.name;
+							p1.style.padding = "20px 40px";
+							
+							let p2 = document.createElement('p');
+							p2.innerHTML = "<strong>Age: </strong>" + item.age;
+							p2.style.padding = "20px 40px";
+
+							let p3 = document.createElement('p');
+							p3.innerHTML = "<strong>Salary: </strong>" + item.salary;
+							p3.style.padding = "20px 40px";
+
+							let p4 = document.createElement('p');
+							p4.innerHTML = "<strong>Office: </strong>" + item.office;
+							p4.style.padding = "20px 40px";
+
+							let hr = document.createElement('hr');
+
+							sectionDescription.appendChild(h3);
+							sectionDescription.appendChild(p1);
+							sectionDescription.appendChild(p2);
+							sectionDescription.appendChild(p3);
+							sectionDescription.appendChild(p4);
+							sectionDescription.appendChild(hr);
+
+							document.getElementById('contents').appendChild(sectionDescription);
+						}
+						
+					}
+
+					if(ajax.readyState == 4 && ajax.status == 404) {
+									
+						//document.getElementById('contents').innerHTML='Error';
+
+					}
+				}
+			}
+
+		</script>
+		
+	</head>
+	<body>
+		<header id="header">
+			<h2>Ajax and JSON</h2>
+			<button onclick="getEmployee();">List JSON</button>
+		</header>
+		<section id="content">
+			<section id="contents">
+				
+			</section>					
+		</section>
+	</body>
+</html>
